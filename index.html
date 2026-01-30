@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <title>Home Calendar</title>
+    <style>
+        body {
+            font-family: Calibri, sans-serif;
+            max-width: 600px;
+            margin: 30px auto;
+            padding: 10px;
+            background: #8b6be2;
+            border-radius: 15px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        form {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        input[type="text"], input[type="date"] {
+            flex: 1;
+            padding: 5px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            background: rgb(69, 86, 238);
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .done {
+            text-decoration: line-through;
+            color: rgb(255, 255, 255);
+        }
+
+        button {
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Home Calendar</h1>
+    <form action="/add" method="POST">
+        <input type="date" name="date" required>
+        <input type="text" name="description" placeholder="Event name" required>
+        <button type="submit">Add</button>
+    </form>
+
+    <ul>
+        {% for event in events %}
+        <li>
+            <span class="{{ 'done' if event.done }}">{{ event.date }} – {{ event.description }}</span>
+            <form action="/toggle/{{ loop.index0 }}" method="POST" style="display:inline;">
+                <button type="submit">{{ '✓' if event.done else '✔' }}</button>
+            </form>
+            <form action="/delete/{{ loop.index0 }}" method="POST" style="display:inline;">
+                <button type="submit">🗑️</button>
+            </form>
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
+
+
+
